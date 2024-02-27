@@ -1,0 +1,45 @@
+apiVersion: "kind.x-k8s.io/v1alpha4"
+kind: Cluster
+name: kargo
+networking:
+  ######################################################################
+  # To use Cilium CNI
+  # https://docs.cilium.io/en/v1.10/gettingstarted/kind/#using-cilium-with-kind
+  # - Set ""kubeProxyMode"" to "none"
+  # - Set "disableDefaultCNI" to true"
+  kubeProxyMode: iptables # disable kube-proxy # Accepts "ipvs", "iptables", or "none"
+  disableDefaultCNI: false # disable kindnet :: Accepts boolean
+nodes:
+  - role: control-plane
+    extraMounts: # Persistent image cache
+      - hostPath: /var/lib/docker/volumes/kargo-control-plane-n01/_data
+        containerPath: /var/lib/containerd
+  - role: worker
+    image: kindest/node:v1.29.0
+    extraMounts: # Persistent image cache
+      - hostPath: /var/lib/docker/volumes/kargo-worker-n02/_data
+        containerPath: /var/lib/containerd
+    # Expose ports on the host:
+    # -  [http] - 80/tcp
+    # - [https] - 443/tcp
+    # - [ssh]   - 2222/tcp
+    extraPortMappings:
+      - listenAddress: "0.0.0.0"
+        protocol: TCP
+        hostPort: 80
+        containerPort: 80
+      - listenAddress: "0.0.0.0"
+        protocol: TCP
+        hostPort: 443
+        containerPort: 443
+      - listenAddress: "0.0.0.0"
+        protocol: TCP
+        hostPort: 2222
+        containerPort: 2222
+    kubeadmConfigPatches:
+      - |
+        # Label the worker node listening on service ports
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
