@@ -10,3 +10,5 @@ local
 .pulumi/*
 .kube/*
 frontmatter.json
+/bin/
+/node_modules/
