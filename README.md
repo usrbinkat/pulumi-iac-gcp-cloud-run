@@ -18,6 +18,9 @@ The Pulumi [Devcontainer](https://code.visualstudio.com/docs/devcontainers/conta
   - [VSCode Devcontainer](#vscode-devcontainer)
   - [Local Environment](#local-environment)
 - [Setup](#setup)
+- [Deploy](#deploy)
+- [Clean Up](#clean-up)
+- [Reference](#reference)
 
 ## Overview
 
@@ -95,7 +98,7 @@ gcloud auth configure-docker
 pulumi config set gcp:project $PROJECT_ID
 ```
 
-## Deploy the stack
+## Deploy
 
 ```
 pulumi up -y
@@ -121,6 +124,6 @@ pulumi destroy -y
 
 ---
 
-# References
+# Reference
 
 Demo code based on original work by [@xiangshen-dk](https://github.com/xiangshen-dk) from [github.com/shenxiang-demo/microservices-demo/.../serverless/pulumi](https://github.com/shenxiang-demo/microservices-demo/tree/pulumi-cloudrun-one-ilb/serverless/pulumi)
