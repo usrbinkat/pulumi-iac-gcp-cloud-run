@@ -26,7 +26,7 @@ let build_image_from_src = config.getBoolean("build_image_from_src") || false;
 let svc_image = new Map<string, string>();
 if (!build_image_from_src) {
     const microsvc_k8s_manifest =
-        loadAll(readFileSync("../../release/kubernetes-manifests.yaml", 'utf8')) as [any];
+        loadAll(readFileSync("./release/kubernetes-manifests.yaml", 'utf8')) as [any];
     for (let item of microsvc_k8s_manifest) {
         if (item.kind == "Deployment") {
             let app_name = item.metadata.name as string;
@@ -43,14 +43,14 @@ const internal_services = [
         "name": "cartservice",
         "path": "hipstershop.CartService",
         "port": 7070,
-        "src_location": "../../src/cartservice/src",
+        "src_location": "./src/cartservice/src",
         "envs": [{ name: "REDIS_ADDR", value: `redis.${domain_name}:6379` }],
     },
     {
         "name": "currencyservice",
         "path": "hipstershop.CurrencyService",
         "port": 7000,
-        "src_location": "../../src/currencyservice",
+        "src_location": "./src/currencyservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -61,7 +61,7 @@ const internal_services = [
         "name": "productcatalogservice",
         "path": "hipstershop.ProductCatalogService",
         "port": 7070,
-        "src_location": "../../src/productcatalogservice",
+        "src_location": "./src/productcatalogservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -72,7 +72,7 @@ const internal_services = [
         "name": "recommendationservice",
         "path": "hipstershop.RecommendationService",
         "port": 8080,
-        "src_location": "../../src/recommendationservice",
+        "src_location": "./src/recommendationservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -84,7 +84,7 @@ const internal_services = [
         "name": "shippingservice",
         "path": "hipstershop.ShippingService",
         "port": 50051,
-        "src_location": "../../src/shippingservice",
+        "src_location": "./src/shippingservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -95,7 +95,7 @@ const internal_services = [
         "name": "checkoutservice",
         "path": "hipstershop.CheckoutService",
         "port": 5050,
-        "src_location": "../../src/checkoutservice",
+        "src_location": "./src/checkoutservice",
         "envs": [
             { name: "PRODUCT_CATALOG_SERVICE_ADDR", value: svc_host_port },
             { name: "SHIPPING_SERVICE_ADDR", value: svc_host_port },
@@ -112,7 +112,7 @@ const internal_services = [
         "name": "adservice",
         "path": "hipstershop.AdService",
         "port": 9555,
-        "src_location": "../../src/adservice",
+        "src_location": "./src/adservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_STATS", value: "1" },
@@ -122,7 +122,7 @@ const internal_services = [
         "name": "emailservice",
         "path": "hipstershop.EmailService",
         "port": 8080,
-        "src_location": "../../src/emailservice",
+        "src_location": "./src/emailservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -132,7 +132,7 @@ const internal_services = [
         "name": "paymentservice",
         "path": "hipstershop.PaymentService",
         "port": 50051,
-        "src_location": "../../src/paymentservice",
+        "src_location": "./src/paymentservice",
         "envs": [
             { name: "DISABLE_TRACING", value: "1" },
             { name: "DISABLE_PROFILER", value: "1" },
@@ -321,7 +321,7 @@ if (build_image_from_src) {
     const frontend_image = new docker.Image("frontend-image", {
         imageName: pulumi.interpolate`gcr.io/${gcp.config.project}/frontend:${image_tag}`,
         build: {
-            context: "../../src/frontend",
+            context: "./src/frontend",
         },
     }, { dependsOn: enable_gcr });
     frontend_image_name = frontend_image.imageName;

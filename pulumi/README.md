@@ -52,6 +52,12 @@ pulumi config set gcp:project $PROJECT_ID
 ```
 You can press `return` to skip the passphrase.
 
+## Install Pulumi NPM Dependencies
+
+```bash
+npm install
+```
+
 ## Create the stack
 ```
 pulumi up -y
